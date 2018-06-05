@@ -11,9 +11,9 @@ export class HeroesComponent implements OnInit {
   heroes: Hero[];
 
   selectedHero: Hero;
-  
+
   getHeroes(): void {
-    this.heroes = this.heroService.getHeores();
+    this.heroService.getHeores().subscribe(heroes => this.heroes = heroes);
   }
 
 
