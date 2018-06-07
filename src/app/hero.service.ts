@@ -10,7 +10,7 @@ import { MessageService } from './message.service';
   providedIn: 'root'
 })
 export class HeroService {
-  getHeores(): Observable<Hero[]>  {
+  getHeroes(): Observable<Hero[]>  {
     this.messsageService.add('HeroService: fetched heroes');
     return of(HEROES);
   }
