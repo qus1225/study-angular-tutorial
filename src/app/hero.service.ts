@@ -36,6 +36,13 @@ export class HeroService {
     );
   }
 
+  updateHero(hero: Hero): Observable<any> {
+    return this.http.put(this.herosUrl, hero, httpOptions).pipe(
+      tap(_ => this.log(`updated her id=${hero.id}`)),
+      catchError(this.handleError<any>('updateHero'))
+    )
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -55,8 +62,12 @@ export class HeroService {
       return of(result as T);
     };
   }
-  
+
   private log(message: string) {
     this.messsageService.add('HeroService: ' + message)
   }
 }
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
