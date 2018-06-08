@@ -9,6 +9,10 @@ import { HEROES } from './mock-heroes';
 
 import { MessageService } from './message.service';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +22,6 @@ export class HeroService {
   constructor(
     private http: HttpClient,
     private messsageService: MessageService,
-
   ) { }
 
   getHeroes(): Observable<Hero[]> {
@@ -60,6 +63,16 @@ export class HeroService {
     )
   }
 
+  searchHero(term: string): Observable<Hero[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+    return this.http.get<Hero[]>(`${this.herosUrl}/?name=${term}`).pipe(
+      tap(_ => this.log(`found heroes matching "${term}"`)),
+      catchError(this.handleError<Hero[]>('searchHeroes', []))
+    )
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -84,7 +97,3 @@ export class HeroService {
     this.messsageService.add('HeroService: ' + message)
   }
 }
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
